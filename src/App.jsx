@@ -12,11 +12,11 @@ const Square = ({ children, isSelected, updateBoard, index }) => {
   const className = `square ${isSelected ? 'is-selected' : ''}`
 
   const handleClick = () => {
-    updateBoard(index)                                                                 //Le pasamos el index para saber en que cuadrado hizo el click
+    updateBoard(index)                                                                       //Le pasamos el index para saber en que cuadrado hizo el click
   }
   return (
     <div onClick={handleClick} className = {className} >
-        {children}                                                                    {/* {children} será reemplazado por el valor de {index}, {children} se refiere a los componentes o elementos que se pasan dentro de las etiquetas de apertura y cierre de un componente.  */}
+        {children}                                                                           {/* {children} será reemplazado por el valor de {index}, {children} se refiere a los componentes o elementos que se pasan dentro de las etiquetas de apertura y cierre de un componente.  */}
     </div>
   )
 }
@@ -30,9 +30,9 @@ const winnerCombo = [
 
 
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(null))                             // El primer elemento es el estado actual y el segundo elemento es una función que permite actualizar el estado. En este caso, solo necesitamos el estado actual*/}
-  
-  const[turn,setTurn] = useState(TURNS.X)                                            //Con el punto accede a la propiedad X del objeto TURNS
+  const [board, setBoard] = useState(Array(9).fill(null))                                    // El primer elemento es el estado actual y el segundo elemento es una función que permite actualizar el estado. En este caso, solo necesitamos el estado actual*/}
+
+  const[turn,setTurn] = useState(TURNS.X)                                                   //Con el punto accede a la propiedad X del objeto TURNS
 
   //null = no hay ganador, false = empate
   const [winner, setWinner] = useState(null)                                       
@@ -40,7 +40,7 @@ function App() {
   const checkWinner = (boardToCheck) =>{
     for (const combo of winnerCombo){
       const [a,b,c] = combo
-      if(boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c]){
+      if(boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c]){         //EL doble && = se utiliza para realizar una evaluación condiciones lógicas(true o false), comúnmente para renderizar condicionalmente un bloque de código. 
         return boardToCheck[a] // x u o
       }
     }
@@ -48,16 +48,22 @@ function App() {
     return null 
   }
 
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))                                                         // Resetea el tablero
+    setTurn(TURNS.X)                                                                     // Resetea el turno
+    setWinner(null)                                                                     // Resetea el ganador
+  }
 
   const updateBoard = (index) => {
-    //Si la posicion tiene algo, no hagas nada (para que no se sobrescriba el turn) o si ya hay un ganador
+    //Si la posicion tiene algo, no hagas nada
+    // (para que no se sobrescriba el turn) o si ya hay un ganador
     if(board[index] || winner){
       return;
     } 
 
     // Actualiza el tablero
-    const newBoard = [...board]                                                      // Copialo datos pero en un nuevo array con el Spread Operator, siempre apra actualizar buena practica que sea en uno nuevo.
-    newBoard[index] = turn                                                           // Asigna el valor de turn (que puede ser 'X' o 'O') al índice index en el nuevo array 
+    const newBoard = [...board]                                                            // Copialo datos pero en un nuevo array con el Spread Operator, siempre apra actualizar buena practica que sea en uno nuevo.
+    newBoard[index] = turn                                                                 // Asigna el valor de turn (que puede ser 'X' o 'O') al índice index en el nuevo array 
     setBoard(newBoard)                                                      
 
     // Cambio de turn
@@ -75,11 +81,12 @@ function App() {
   return (
        <main className='board'>
         <h1>Tic Tac Toe</h1>
+        <button onClick={resetGame}>Game Reset</button>
         <section className='game'>
           {
-            board.map((cell, index) =>{                                              //Primera posición del parametro =  el elemento actual del array que se está iterando, y la segunda posición= para el índice de ese elemento
+            board.map((cell, index) =>{                                                      //Primera posición del parametro =  el elemento actual del array que se está iterando, y la segunda posición= para el índice de ese elemento
               return (
-                <Square key={index} index={index} updateBoard={updateBoard}>         {/* Se pasa la funcion = updateBoard, no la ejecucion de la funcion = updateBoard(). Porque queres que la ejecute solo al hacer click */}
+                <Square key={index} index={index} updateBoard={updateBoard}>                {/* Se pasa la funcion = updateBoard, no la ejecucion de la funcion = updateBoard(). Porque queres que la ejecute solo al hacer click */}
                   {board[index]}
                 </Square>
               )
@@ -97,7 +104,7 @@ function App() {
         </section>  
 
         {
-          winner !== null && (
+          winner !== null && (                                                              //EL doble && = se utiliza para realizar una evaluación condiciones lógicas(true o false), comúnmente para renderizar condicionalmente un bloque de código. 
             <section className='winner'>
               <div className='text'>
                 <h2>
@@ -109,14 +116,13 @@ function App() {
                 </header>
 
                 <footer>
-                  <button>Start again</button>
+                  <button onClick={resetGame}> Start again</button>
                 </footer>
               </div>
             </section>
           )
         }
        </main>
-    
   )
 }
 
