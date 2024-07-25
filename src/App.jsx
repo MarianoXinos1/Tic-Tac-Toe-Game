@@ -54,6 +54,10 @@ function App() {
     setWinner(null)                                                                     // Resetea el ganador
   }
 
+  const checkEndGame = (newBoard) => {
+    return newBoard.every((square) => square !== null)                                // every = es un método de array que verifica si todos los elementos del array cumplen con una condición.
+  }
+
   const updateBoard = (index) => {
     //Si la posicion tiene algo, no hagas nada
     // (para que no se sobrescriba el turn) o si ya hay un ganador
@@ -72,16 +76,16 @@ function App() {
 
     const newWinner = checkWinner(newBoard)
     if (newWinner){
-      setWinner(() =>{
-        return newWinner
-      })
-    }
+      setWinner(newWinner)
+      } else if(checkEndGame(newBoard)){
+        setWinner(false) //empate
+      }
   }
 
   return (
        <main className='board'>
         <h1>Tic Tac Toe</h1>
-        <button onClick={resetGame}>Game Reset</button>
+        <button onClick={resetGame}> Game Reset</button>
         <section className='game'>
           {
             board.map((cell, index) =>{                                                      //Primera posición del parametro =  el elemento actual del array que se está iterando, y la segunda posición= para el índice de ese elemento
@@ -90,7 +94,7 @@ function App() {
                   {board[index]}
                 </Square>
               )
-            })
+            }) 
           }
         </section> 
 
