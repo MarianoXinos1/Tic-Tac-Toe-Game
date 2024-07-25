@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 const TURNS = {
@@ -29,11 +27,19 @@ function App() {
   
   const[turn,setTurn] = useState(TURNS.X)                                      //Con el punto accede a la propiedad X del objeto TURNS
 
+
   const updateBoard = (index) => {
-    const newBoard = [...board]                                               //Spread operator, crea una copia del array board
-    newBoard[index] = turn                                                   //Le asigna el valor de turn(X o O) al index que se hizo click
+    //Si la posicion tiene algo, no hagas nada (para que no se sobrescriba el turn)
+    if(board[index]){
+      return;
+    } 
+
+    // Actualiza el tablero
+    const newBoard = [...board]                                               // Copialo datos pero en un nuevo array con el Spread Operator, siempre apra actualizar buena practica que sea en uno nuevo.
+    newBoard[index] = turn                                                   // Asigna el valor de turn (que puede ser 'X' o 'O') al índice index en el nuevo array 
     setBoard(newBoard)                                                      
 
+    // Cambio de turn
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
   }
