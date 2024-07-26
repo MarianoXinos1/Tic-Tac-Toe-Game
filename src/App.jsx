@@ -1,33 +1,11 @@
-import { useState } from 'react'
 import './App.css'
 import confetti from 'canvas-confetti'
+import { useState } from 'react'
+import Square from './components/Square.jsx'
+import { TURNS } from './const.js'
+import { checkWinner, checkEndGame } from './board.js';
+import Winner from './components/Winner.jsx'
 
-const TURNS = {
-  X: 'x',
-  O: 'o'
-
-}
-
-const Square = ({ children, isSelected, updateBoard, index }) => {
-
-  const className = `square ${isSelected ? 'is-selected' : ''}`
-
-  const handleClick = () => {
-    updateBoard(index)                                                                       //Le pasamos el index para saber en que cuadrado hizo el click
-  }
-  return (
-    <div onClick={handleClick} className = {className} >
-        {children}                                                                           {/* {children} será reemplazado por el valor de {index}, {children} se refiere a los componentes o elementos que se pasan dentro de las etiquetas de apertura y cierre de un componente.  */}
-    </div>
-  )
-}
-
-
-const winnerCombo = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal
-  [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertical
-  [0, 4, 8], [2, 4, 6]              // Diagonal
-]
 
 
 function App() {
@@ -38,25 +16,11 @@ function App() {
   //null = no hay ganador, false = empate
   const [winner, setWinner] = useState(null)                                       
 
-  const checkWinner = (boardToCheck) =>{
-    for (const combo of winnerCombo){
-      const [a,b,c] = combo
-      if(boardToCheck[a] && boardToCheck[a] === boardToCheck[b] && boardToCheck[a] === boardToCheck[c]){         //EL doble && = se utiliza para realizar una evaluación condiciones lógicas(true o false), comúnmente para renderizar condicionalmente un bloque de código. 
-        return boardToCheck[a] // x u o
-      }
-    }
-    // si no hay ganador
-    return null 
-  }
 
   const resetGame = () => {
-    setBoard(Array(9).fill(null))                                                         // Resetea el tablero
-    setTurn(TURNS.X)                                                                     // Resetea el turno
-    setWinner(null)                                                                     // Resetea el ganador
-  }
-
-  const checkEndGame = (newBoard) => {
-    return newBoard.every((square) => square !== null)                                // every = es un método de array que verifica si todos los elementos del array cumplen con una condición.
+    setBoard(Array(9).fill(null))                                                           // Resetea el tablero
+    setTurn(TURNS.X)                                                                       // Resetea el turno
+    setWinner(null)                                                                       // Resetea el ganador
   }
 
   const updateBoard = (index) => {
@@ -109,25 +73,7 @@ function App() {
           </Square>   
         </section>  
 
-        {
-          winner !== null && (                                                              //EL doble && = se utiliza para realizar una evaluación condiciones lógicas(true o false), comúnmente para renderizar condicionalmente un bloque de código. 
-            <section className='winner'>
-              <div className='text'>
-                <h2>
-                  {winner === false ? 'Tie' : 'The winner is:'}
-                </h2>
-
-                <header className='win'>
-                  {winner && <Square>{winner}</Square>}
-                </header>
-
-                <footer>
-                  <button onClick={resetGame}> Start again</button>
-                </footer>
-              </div>
-            </section>
-          )
-        }
+       <Winner resetGame={resetGame}  winner={winner}/>
        </main>
   )
 }
