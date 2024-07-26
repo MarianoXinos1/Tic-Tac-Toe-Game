@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import confetti from 'canvas-confetti'
 
 const TURNS = {
   X: 'x',
@@ -76,6 +77,7 @@ function App() {
 
     const newWinner = checkWinner(newBoard)
     if (newWinner){
+      confetti()
       setWinner(newWinner)
       } else if(checkEndGame(newBoard)){
         setWinner(false) //empate
@@ -88,10 +90,10 @@ function App() {
         <button onClick={resetGame}> Game Reset</button>
         <section className='game'>
           {
-            board.map((cell, index) =>{                                                      //Primera posición del parametro =  el elemento actual del array que se está iterando, y la segunda posición= para el índice de ese elemento
+            board.map((square, index) =>{                                                      //Primera posición del parametro =  el elemento actual del array que se está iterando, y la segunda posición= para el índice de ese elemento
               return (
                 <Square key={index} index={index} updateBoard={updateBoard}>                {/* Se pasa la funcion = updateBoard, no la ejecucion de la funcion = updateBoard(). Porque queres que la ejecute solo al hacer click */}
-                  {board[index]}
+                  {square}
                 </Square>
               )
             }) 
