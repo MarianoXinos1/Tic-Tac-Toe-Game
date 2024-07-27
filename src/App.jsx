@@ -9,18 +9,27 @@ import Winner from './components/Winner.jsx'
 
 
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(null))                                    // El primer elemento es el estado actual y el segundo elemento es una función que permite actualizar el estado. En este caso, solo necesitamos el estado actual*/}
+  const [board, setBoard] = useState(() =>{                                  
+    const boardFromStorage = window.localStorage.getItem('board')                             // Obtiene el tablero del almacenamiento local
+    return boardFromStorage ? JSON.parse(boardFromStorage) : Array(9).fill(null)             // Si hay un tablero en el almacenamiento local, lo convierte de nuevo en un array.
+  })           
 
-  const[turn,setTurn] = useState(TURNS.X)                                                   //Con el punto accede a la propiedad X del objeto TURNS
+  const[turn,setTurn] = useState(() =>{                                                     
+    const turnFromStorage = window.localStorage.getItem('turn')                              // Obtiene el turno del almacenamiento local
+    return turnFromStorage ?? TURNS.X                                                       // ?? = valdia cuando es null o undefined y si lo es, le da el valor que especificamos = TURN.X en este caso.
+  })                                             
 
   //null = no hay ganador, false = empate
   const [winner, setWinner] = useState(null)                                       
 
-
+  // resetear tablero, tuno, ganador, storage
   const resetGame = () => {
-    setBoard(Array(9).fill(null))                                                           // Resetea el tablero
-    setTurn(TURNS.X)                                                                       // Resetea el turno
-    setWinner(null)                                                                       // Resetea el ganador
+    setBoard(Array(9).fill(null))                                                           
+    setTurn(TURNS.X)                                                                       
+    setWinner(null)                                                                       
+
+    window.localStorage.removeItem('board')
+    window.localStorage.removeItem('turn')
   }
 
   const updateBoard = (index) => {
@@ -39,6 +48,12 @@ function App() {
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
 
+    //guardar partida y turno
+    window.localStorage.setItem('board', JSON.stringify(newBoard))                      // localStorage = guarda almacenamiento local del navegador un string, usamos el stringify para que el array lo pase a string
+    window.localStorage.setItem('turn', newTurn)                                       // guarda el objeto newBoard en el almacenamiento local bajo la clave 'board'
+
+
+    //chequear si hay un ganador
     const newWinner = checkWinner(newBoard)
     if (newWinner){
       confetti()

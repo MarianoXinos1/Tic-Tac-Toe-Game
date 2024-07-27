@@ -5,6 +5,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+ 
 
 * {
   padding: 0;
@@ -26,9 +27,9 @@ body {
 .board button {
   padding: 8px 12px;
   margin: 25px;
-  background: transparent;
-  border: 2px solid #eee;
-  color: #eee;
+  background: #fff;
+  border: 2px solid #2222227e;
+  color: #2222227e;
   width: 100px;
   border-radius: 5px;
   transition: 0.2s;
@@ -39,6 +40,7 @@ body {
 .board button:hover {
   background: #eee;
   color: #222;
+  border: 2px solid #222;
 }
 
 .board .game {
@@ -53,7 +55,6 @@ body {
   margin: 15px auto;
   width: fit-content;
   position: relative;
-  border-radius: 10px;
 }
 
 .turn .square,
@@ -66,7 +67,7 @@ body {
 
 .square.is-selected {
   color: #fff;
-  background: #09f;
+  background:#469bea;
 }
 
 .winner {
@@ -81,11 +82,11 @@ body {
 }
 
 .winner .text {
-  background: #111;
+  background: #fff;
   height: 300px;
   width: 320px;
-  border: 2px solid #eee;
-  border-radius: 10px;
+  border: 2px solid #222;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,4 +112,5 @@ body {
   place-items: center;
   cursor: pointer;
   font-size: 48px;
+  margin-bottom: 10px;
 }
